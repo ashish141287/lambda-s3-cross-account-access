@@ -30,12 +30,9 @@ This lambda role will be used by lambda when the lambda function is triggered. P
 
 import boto3
 import json
-print('Loading function')
 
 s3client = boto3.client("s3")
-s3 = boto3.resource('s3')
 def lambda_handler(event, context):
-    print(event)
     record = event["Records"][0]
     source_bucket = record['s3']['bucket']['name']
     getKey = record['s3']['object']['key']
@@ -43,10 +40,7 @@ def lambda_handler(event, context):
     dest_key_path= "test/"
     filename = str(getKey)
     dest_key = dest_key_path + filename
-    print(filename)
-    print(dest_key)
     try:
-        print('test')
         destbucket = 'bucket-B'
         copy_source = {'Bucket': source_bucket, 'Key': getKey}
         copyObject= s3client.copy_object(CopySource = copy_source, Bucket = destbucket, Key = dest_key)
@@ -64,7 +58,7 @@ def lambda_handler(event, context):
             "Sid": "",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::xxxxxxxxxxxxxxx:role/lambda-role-in-account-a"
+                "AWS": "arn:aws:iam::xxxxxxxxxxxxxxx:role/lambda-role-in-account-A"
             },
             "Action": [
                 "s3:PutObject",
@@ -74,6 +68,5 @@ def lambda_handler(event, context):
         }
     ]
 }
-The following is a summary of the walkthrough steps:
 
 
